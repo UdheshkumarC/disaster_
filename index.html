@@ -118,6 +118,8 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     <script>
+        let map;
+
         // Dummy login function
         function login() {
             const username = document.getElementById('username').value;
@@ -134,7 +136,7 @@
 
         // Function to fetch earthquake data
         async function getEarthquakeData(lat, lon) {
-            const api_url = https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&latitude=${lat}&longitude=${lon}&maxradiuskm=100;
+            const api_url = `https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&latitude=${lat}&longitude=${lon}&maxradiuskm=100`;
 
             try {
                 const response = await fetch(api_url);
@@ -150,7 +152,7 @@
         // Function to fetch flood data (dummy API)
         async function getFloodData(lat, lon) {
             // Replace with actual flood hazard API
-            const api_url = https://example.com/flood-api?lat=${lat}&lon=${lon};
+            const api_url = `https://example.com/flood-api?lat=${lat}&lon=${lon}`;
 
             try {
                 const response = await fetch(api_url);
@@ -166,7 +168,7 @@
         // Function to fetch wildfire data (dummy API)
         async function getWildfireData(lat, lon) {
             // Replace with actual wildfire hazard API
-            const api_url = https://example.com/wildfire-api?lat=${lat}&lon=${lon};
+            const api_url = `https://example.com/wildfire-api?lat=${lat}&lon=${lon}`;
 
             try {
                 const response = await fetch(api_url);
@@ -184,8 +186,13 @@
             const lat = document.getElementById('latitude').value;
             const lon = document.getElementById('longitude').value;
 
-            // Create a map centered on the provided coordinates
-            const map = L.map('map').setView([lat, lon], 8);
+            // Remove existing map if it exists
+            if (map) {
+                map.remove();
+            }
+
+            // Create a new map centered on the provided coordinates
+            map = L.map('map').setView([lat, lon], 8);
 
             // Add tile layer (basemap)
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -203,7 +210,7 @@
                     const coords = feature.geometry.coordinates;
                     const properties = feature.properties;
                     const marker = L.marker([coords[1], coords[0]]).addTo(map);
-                    marker.bindPopup(Earthquake: ${properties.title}<br>Magnitude: ${properties.mag});
+                    marker.bindPopup(`Earthquake: ${properties.title}<br>Magnitude: ${properties.mag}`);
                 });
             }
 
@@ -213,7 +220,7 @@
                     const coords = feature.geometry.coordinates;
                     const properties = feature.properties;
                     const marker = L.marker([coords[1], coords[0]], {icon: L.icon({iconUrl: 'https://example.com/flood_icon.png'})}).addTo(map);
-                    marker.bindPopup(Flood: ${properties.name});
+                    marker.bindPopup(`Flood: ${properties.name}`);
                 });
             }
 
@@ -223,7 +230,7 @@
                     const coords = feature.geometry.coordinates;
                     const properties = feature.properties;
                     const marker = L.marker([coords[1], coords[0]], {icon: L.icon({iconUrl: 'https://example.com/fire_icon.png'})}).addTo(map);
-                    marker.bindPopup(Wildfire: ${properties.name});
+                    marker.bindPopup(`Wildfire: ${properties.name}`);
                 });
             }
 
