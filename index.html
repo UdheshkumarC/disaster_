@@ -118,8 +118,6 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     <script>
-        let map;
-
         // Dummy login function
         function login() {
             const username = document.getElementById('username').value;
@@ -186,13 +184,8 @@
             const lat = document.getElementById('latitude').value;
             const lon = document.getElementById('longitude').value;
 
-            // Remove existing map if it exists
-            if (map) {
-                map.remove();
-            }
-
-            // Create a new map centered on the provided coordinates
-            map = L.map('map').setView([lat, lon], 8);
+            // Create a map centered on the provided coordinates
+            const map = L.map('map').setView([lat, lon], 8);
 
             // Add tile layer (basemap)
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
